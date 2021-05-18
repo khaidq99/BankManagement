@@ -29,7 +29,7 @@ public class AccountEntity extends BaseEntity{
 	private CustomerEntity customer;
 	
 	@OneToMany(mappedBy = "account")
-	private List<LoanEntity> ListbookSaving;
+	private List<LoanEntity> listLoan;
 
 	public AccountEntity() {
 		super();
@@ -75,23 +75,11 @@ public class AccountEntity extends BaseEntity{
 		this.customer = customer;
 	}
 
-	public List<LoanEntity> getListbookSaving() {
-		return ListbookSaving;
+	public List<LoanEntity> getListLoan() {
+		return listLoan;
 	}
 
-	public void setListbookSaving(List<LoanEntity> listbookSaving) {
-		ListbookSaving = listbookSaving;
-	}
-
-	@Override
-	public String toString() {
-		return "AccountEntity{" +
-				"username='" + username + '\'' +
-				", password='" + password + '\'' +
-				", numberAccount='" + numberAccount + '\'' +
-				", balance=" + balance +
-				", customer=" + customer +
-				", ListbookSaving=" + ListbookSaving +
-				'}';
+	public void setListLoan(List<LoanEntity> listLoan) {
+		this.listLoan = listLoan;
 	}
 }

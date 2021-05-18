@@ -25,7 +25,7 @@ import com.entity.AccountEntity;
 import com.entity.LoanEntity;
 import com.entity.CustomerEntity;
 import com.repository.AccountRepository;
-import com.repository.BookSavingRepository;
+import com.repository.LoanRepository;
 import com.repository.CustomerRepository;
 
 @Controller
@@ -38,7 +38,7 @@ public class CustomerController {
 	private AccountConverter ac;
 	
 	@Autowired
-	private BookSavingRepository bsRepo;
+	private LoanRepository bsRepo;
 	
 	@Autowired
 	private LoanConverter bsc;

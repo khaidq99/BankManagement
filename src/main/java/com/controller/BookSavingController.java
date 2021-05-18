@@ -8,14 +8,14 @@ import com.converter.AccountConverter;
 import com.converter.LoanConverter;
 import com.converter.InteresConverter;
 import com.repository.AccountRepository;
-import com.repository.BookSavingRepository;
+import com.repository.LoanRepository;
 import com.repository.InteresRepository;
 
 @Controller
 @RequestMapping("/booksaving")
 public class BookSavingController {
 	@Autowired
-	private BookSavingRepository bsRepo;
+	private LoanRepository bsRepo;
 	
 	@Autowired
 	private LoanConverter bc;
