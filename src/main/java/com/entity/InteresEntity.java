@@ -26,7 +26,7 @@ public class InteresEntity extends BaseEntity{
 	}
 	
 	@OneToMany(mappedBy = "interes")
-	private List<BookSavingEntity> listBookSaving;
+	private List<LoanEntity> listBookSaving;
 
 	public InteresEntity() {
 		super();
@@ -56,11 +56,11 @@ public class InteresEntity extends BaseEntity{
 		this.type = type;
 	}
 
-	public List<BookSavingEntity> getListBookSaving() {
+	public List<LoanEntity> getListBookSaving() {
 		return listBookSaving;
 	}
 
-	public void setListBookSaving(List<BookSavingEntity> listBookSaving) {
+	public void setListBookSaving(List<LoanEntity> listBookSaving) {
 		this.listBookSaving = listBookSaving;
 	}
 	

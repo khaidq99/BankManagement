@@ -6,8 +6,7 @@ public class CustomerDto {
 	private String birthDay;
 	private String phone;
 	private String email;
-	private String permanentAddress;
-	private String homeTown;
+	private String address;
 	public CustomerDto() {
 		super();
 	}
@@ -42,17 +41,12 @@ public class CustomerDto {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getPermanentAddress() {
-		return permanentAddress;
+
+	public String getAddress() {
+		return address;
 	}
-	public void setPermanentAddress(String permanentAddress) {
-		this.permanentAddress = permanentAddress;
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
-	public String getHomeTown() {
-		return homeTown;
-	}
-	public void setHomeTown(String homeTown) {
-		this.homeTown = homeTown;
-	}
-	
 }

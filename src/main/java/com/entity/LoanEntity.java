@@ -10,19 +10,19 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="book_saving")
-public class BookSavingEntity extends BaseEntity{	
+@Table(name="loan")
+public class LoanEntity extends BaseEntity{
 	@Column
 	private Date startDate;
 	
 	@Column
-	private Long amountSend;
+	private Long loan;
 	
 	@Column
 	private String description;
 	
 	@Column
-	private Date withdrawDate;
+	private Date paymentDate;
 	
 	@ManyToOne
 	@JoinColumn(name="interes_id")
@@ -37,7 +37,7 @@ public class BookSavingEntity extends BaseEntity{
 		if(this.startDate == null) this.startDate = new Date();
 	}
 
-	public BookSavingEntity() {
+	public LoanEntity() {
 		super();
 	}
 
@@ -49,12 +49,12 @@ public class BookSavingEntity extends BaseEntity{
 		this.startDate = startDate;
 	}
 
-	public Long getAmountSend() {
-		return amountSend;
+	public Long getLoan() {
+		return loan;
 	}
 
-	public void setAmountSend(Long amountSend) {
-		this.amountSend = amountSend;
+	public void setLoan(Long loan) {
+		this.loan = loan;
 	}
 
 	public String getDescription() {
@@ -81,12 +81,11 @@ public class BookSavingEntity extends BaseEntity{
 		this.account = account;
 	}
 
-	public Date getWithdrawDate() {
-		return withdrawDate;
+	public Date getPaymentDate() {
+		return paymentDate;
 	}
 
-	public void setWithdrawDate(Date withdrawDate) {
-		this.withdrawDate = withdrawDate;
+	public void setPaymentDate(Date paymentDate) {
+		this.paymentDate = paymentDate;
 	}
-
 }

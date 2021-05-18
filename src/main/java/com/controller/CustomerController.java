@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.converter.AccountConverter;
-import com.converter.BookSavingConverter;
+import com.converter.LoanConverter;
 import com.dto.AccountDto;
-import com.dto.BookSavingDto;
+import com.dto.LoanDto;
 import com.entity.AccountEntity;
-import com.entity.BookSavingEntity;
+import com.entity.LoanEntity;
 import com.entity.CustomerEntity;
 import com.repository.AccountRepository;
 import com.repository.BookSavingRepository;
@@ -41,7 +41,7 @@ public class CustomerController {
 	private BookSavingRepository bsRepo;
 	
 	@Autowired
-	private BookSavingConverter bsc;
+	private LoanConverter bsc;
 	
 	@GetMapping
 	public String showCustomer(Model model) {
@@ -70,13 +70,13 @@ public class CustomerController {
 			AccountDto acc = ac.toDto(OptAe.get());
 			model.addAttribute("acc", acc);
 		}
-		List<BookSavingEntity> listE = bsRepo.findByAccountId(id);
+		List<LoanEntity> listE = bsRepo.findByAccountId(id);
 		if(listE.isEmpty()) {
 			model.addAttribute("listBs", null);
 		}
 		else {
-			List<BookSavingDto> listBs = new ArrayList<>();
-			for(BookSavingEntity bse : listE) {
+			List<LoanDto> listBs = new ArrayList<>();
+			for(LoanEntity bse : listE) {
 				listBs.add(bsc.toDto(bse));
 			}
 			model.addAttribute("listBs", listBs);

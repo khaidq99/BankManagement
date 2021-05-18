@@ -22,12 +22,9 @@ public class CustomerEntity extends BaseEntity{
 	
 	@Column
 	private String email;
-	
+
 	@Column
-	private String permanentAddress;
-	
-	@Column
-	private String homeTown;
+	private String address;
 	
 	@OneToMany(mappedBy = "customer")
 	private List<AccountEntity> listAccount;
@@ -76,19 +73,11 @@ public class CustomerEntity extends BaseEntity{
 		this.email = email;
 	}
 
-	public String getPermanentAddress() {
-		return permanentAddress;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setPermanentAddress(String permanentAddress) {
-		this.permanentAddress = permanentAddress;
+	public void setAddress(String address) {
+		this.address = address;
 	}
-
-	public String getHomeTown() {
-		return homeTown;
-	}
-
-	public void setHomeTown(String homeTown) {
-		this.homeTown = homeTown;
-	}	
 }

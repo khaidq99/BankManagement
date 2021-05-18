@@ -14,10 +14,9 @@ public class CustomerConverter {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		c.setBirthDay(formatter.format(ce.getBirthday()));
 		c.setEmail(ce.getEmail());
-		c.setHomeTown(ce.getHomeTown());
 		c.setId(ce.getId());
 		c.setName(ce.getName());
-		c.setPermanentAddress(ce.getPermanentAddress());
+		c.setAddress(ce.getAddress());
 		c.setPhone(ce.getPhone());
 		return c;
 	}

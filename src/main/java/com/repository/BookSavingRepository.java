@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import com.entity.BookSavingEntity;
+import com.entity.LoanEntity;
 
-public interface BookSavingRepository extends CrudRepository<BookSavingEntity, Long>{
+public interface BookSavingRepository extends CrudRepository<LoanEntity, Long>{
 	@Query("Select bse from BookSavingEntity bse Where bse.account.id=?1 And bse.withdrawDate=null")
-	List<BookSavingEntity> findByAccountId(Long accId);
+	List<LoanEntity> findByAccountId(Long accId);
 }

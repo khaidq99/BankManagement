@@ -1,14 +1,14 @@
 package com.dto;
 
-public class BookSavingDto {
+public class LoanDto {
 	private Long id;
 	private String startDate;
 	private String description;
-	private Long amountSend;
-	private String withdrawDate;
+	private Long loan;
+	private String paymentDate;
 	private InteresDto interes;
 	
-	public BookSavingDto() {
+	public LoanDto() {
 		super();
 	}
 
@@ -34,13 +34,14 @@ public class BookSavingDto {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	public Long getAmountSend() {
-		return amountSend;
+
+
+	public Long getLoan() {
+		return loan;
 	}
 
-	public void setAmountSend(Long amountSend) {
-		this.amountSend = amountSend;
+	public void setLoan(Long loan) {
+		this.loan = loan;
 	}
 
 	public InteresDto getInteres() {
@@ -50,12 +51,11 @@ public class BookSavingDto {
 		this.interes = interes;
 	}
 
-	public String getWithdrawDate() {
-		return withdrawDate;
+	public String getPaymentDate() {
+		return paymentDate;
 	}
 
-	public void setWithdrawDate(String withdrawDate) {
-		this.withdrawDate = withdrawDate;
+	public void setPaymentDate(String paymentDate) {
+		this.paymentDate = paymentDate;
 	}
-	
 }

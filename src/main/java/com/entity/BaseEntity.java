@@ -23,16 +23,9 @@ public abstract class BaseEntity {
 	@Column
 	private Date modifiedDate;
 	
-	@Column
-	private String createBy;
-	
-	@Column
-	private String modifiedBy;
-	
 	@PrePersist
 	protected void prePersist() {
 		if(this.createDate == null) this.createDate = new Date();
-		if(this.modifiedDate == null) this.modifiedDate = new Date();
 	}
 	
 	@PreUpdate
@@ -59,22 +52,6 @@ public abstract class BaseEntity {
 
 	public void setModifiedDate(Date modifiedDate) {
 		this.modifiedDate = modifiedDate;
-	}
-
-	public String getCreateBy() {
-		return createBy;
-	}
-
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
-
-	public String getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
 	}
 
 	public Long getId() {

@@ -29,7 +29,7 @@ public class AccountEntity extends BaseEntity{
 	private CustomerEntity customer;
 	
 	@OneToMany(mappedBy = "account")
-	private List<BookSavingEntity> ListbookSaving;
+	private List<LoanEntity> ListbookSaving;
 
 	public AccountEntity() {
 		super();
@@ -75,11 +75,11 @@ public class AccountEntity extends BaseEntity{
 		this.customer = customer;
 	}
 
-	public List<BookSavingEntity> getListbookSaving() {
+	public List<LoanEntity> getListbookSaving() {
 		return ListbookSaving;
 	}
 
-	public void setListbookSaving(List<BookSavingEntity> listbookSaving) {
+	public void setListbookSaving(List<LoanEntity> listbookSaving) {
 		ListbookSaving = listbookSaving;
 	}
 
