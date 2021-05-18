@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #offcanvas},
+                                                ~{:: #header},
+                                                ~{:: #mainContent},
+                                                ~{:: #footer},
+                                                ~{:: #handler}
+                                               )}">
+<head>
+    <title>Khách hàng</title>
+</head>
+<body>
+
+<div id="offcanvas" th:replace="~{/fragments/app-fragments :: offcanvas}">
+</div>
+
+<header id="header" th:replace="~{/fragments/app-fragments :: header}">
+</header>
+
+<div id="mainContent">
+    <div class="container">
+        <div class="jumbotron">
+            <h2>Chi tiết khách hàng</h2>
+            <form th:object="${account}">
+
+                <table border="0" cellpadding="10">
+                    <tr>
+                        <td>Account id:</td>
+                        <td>
+                            <input type="text" th:field="*{id}" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Họ và tên:</td>
+                        <td>
+                            <input type="text" th:field="*{fullname}" readonly="readonly"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Số điện thoại:</td>
+                        <td><input type="text" th:field="*{phone}" readonly="readonly"/></td>
+                    </tr>
+                    <tr>
+                        <td>Số CMND/CCCD:</td>
+                        <td><input type="text" th:field="*{identificationNum}" readonly="readonly"/></td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td><input type="text" th:field="*{email}" readonly="readonly"/></td>
+                    </tr>
+                    <tr>
+                        <td>Địa chỉ:</td>
+                        <td><input type="text" th:field="*{address}" readonly="readonly"/></td>
+                    </tr>
+                    <tr>
+                        <td>Công việc:</td>
+                        <td><input type="text" th:field="*{job}" readonly="readonly"/></td>
+                    </tr>
+                </table>
+            </form>
+            <p><a class="btn btn-success btn-lg" th:href="@{'/loan/' + ${account.id}}" role="button">Vay lãi</a></p>
+        </div>
+    </div>
+
+</div>
+
+<footer id="footer" th:replace="~{/fragments/app-fragments :: footer}">
+</footer>
+
+</body>
+</html>

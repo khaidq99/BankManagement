@@ -38,15 +38,14 @@ public class CustomerController {
 	private AccountConverter ac;
 	
 	@Autowired
-	private LoanRepository bsRepo;
+	private LoanRepository loanRepo;
 	
 	@Autowired
-	private LoanConverter bsc;
+	private LoanConverter loanConverter;
 	
 	@GetMapping
 	public String showCustomer(Model model) {
-		model.addAttribute("isSuccess", true);
-		return "customer";
+		return "customers/list";
 	}
 	
 	@GetMapping("/search")
@@ -70,14 +69,14 @@ public class CustomerController {
 			AccountDto acc = ac.toDto(OptAe.get());
 			model.addAttribute("acc", acc);
 		}
-		List<LoanEntity> listE = bsRepo.findByAccountId(id);
+		List<LoanEntity> listE = loanRepo.findByAccountId(id);
 		if(listE.isEmpty()) {
 			model.addAttribute("listBs", null);
 		}
 		else {
 			List<LoanDto> listBs = new ArrayList<>();
 			for(LoanEntity bse : listE) {
-				listBs.add(bsc.toDto(bse));
+				listBs.add(loanConverter.toDto(bse));
 			}
 			model.addAttribute("listBs", listBs);
 		}

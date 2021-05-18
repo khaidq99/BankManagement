@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8" />
+    <title>App Fragments</title>
+</head>
+<body>
+
+<!--offcanvas-->
+<div th:fragment = "offcanvas" class="offcanvas-menu-wrapper">
+    <div class="offcanvas__search">
+        <i class="fa fa-search search-switch"></i>
+    </div>
+    <div class="offcanvas__logo">
+        <a href="/"><img src="img/logo-vcb.png" alt=""></a>
+    </div>
+    <nav class="offcanvas__menu mobile-menu">
+        <ul>
+            <li class="active"><a href="/index">Trang chủ</a></li>
+            <li><a href="/customer">Khách hàng</a></li>
+            <li><a href="/login">Đăng nhập</a></li>
+        </ul>
+    </nav>
+    <div id="mobile-menu-wrap"></div>
+</div>
+
+<!-- header -->
+<header class="header" th:fragment = "header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="header__logo">
+                    <a href="/index"><img src="img/logo-vcb.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="header__nav">
+                    <nav class="header__menu">
+                        <ul>
+                            <li class="active"><a href="/">Trang chủ</a></li>
+                            <li><a href="/customer">Khách hàng</a></li>
+                            <li sec:authorize="!isAuthenticated()"><a href="/login">Đăng nhập</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-lg-1">
+                <div sec:authorize="isAuthenticated()">
+                    <p class="user_info">Xin chào, [[${#request.userPrincipal.principal.fullName}]]</p>
+                </div>
+            </div>
+        </div>
+        <div class="canvas__open">
+            <span class="fa fa-bars"></span>
+        </div>
+    </div>
+</header>
+
+<!--footer-->
+<footer class="footer" th:fragment="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="footer__about">
+<!--                    <div class="footer__logo">-->
+<!--                        <a href="./index.html"><img src="img/logo-vcb.png" alt=""></a>-->
+<!--                    </div>-->
+<!--                    <p>Please remember though that how far you go is up to you. There is no substitute for your own-->
+<!--                        work and effort in succeeding in this business.</p>-->
+                </div>
+            </div>
+            <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                <div class="footer__widget">
+                    <h5>Dịch vụ</h5>
+                    <div class="footer__widget">
+                        <ul>
+                            <li><a href="#">Gói vay cá nhân</a></li>
+                            <li><a href="#">Gói vay doanh nghiệp</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-3 col-sm-6">
+                <div class="footer__widget">
+                    <h5>Xã hội</h5>
+                    <div class="footer__widget footer__widget--social">
+                        <ul>
+                            <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+                            <li><a href="#"><i class="fa fa-instagram"></i> Instagram</a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i> Twitter</a></li>
+                            <li><a href="#"><i class="fa fa-skype"></i> Skype</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                <div class="footer__widget footer__widget--address">
+                    <h5>Giờ mở cửa</h5>
+                    <p>Chúng tôi làm việc từ Thứ 2 - Thứ 6</p>
+                    <ul>
+                        <li>8:00 am - 12:00 pm</li>
+                        <li>13:30 am - 16:00 pm</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer__copyright">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <ul class="footer__copyright__links">
+                        <li><a href="#">Điều khoản</a></li>
+                        <li><a href="#">Chính sách</a></li>
+                        <li><a href="#">Cộng đồng</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 col-md-6">
+
+                    <div class="footer__copyright__text">
+                        <p>Copyright &copy;2021</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

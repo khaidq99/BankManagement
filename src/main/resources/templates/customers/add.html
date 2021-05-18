@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #offcanvas},
+                                                ~{:: #header},
+                                                ~{:: #mainContent},
+                                                ~{:: #footer},
+                                                ~{:: #handler}
+                                               )}">
+<head>
+    <title>Khách hàng</title>
+</head>
+<body>
+
+<div id="offcanvas" th:replace="~{/fragments/app-fragments :: offcanvas}">
+</div>
+
+<header id="header" th:replace="~{/fragments/app-fragments :: header}">
+</header>
+
+<div id="mainContent">
+    <div class="container customer_add">
+        <h2 class="text-center main_title">Tạo tài khoản cho khách hàng</h2>
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <form th:action="@{/customer/add}" th:object="${account}" method="post">
+                    <div class="form-group">
+                        <label for="fullname">Họ và tên: <span style="color: red">*</span></label>
+                        <input type="text" class="form-control" th:field="*{fullname}" id="fullname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại: <span style="color: red">*</span></label>
+                        <input type="number" class="form-control" th:field="*{phone}" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="identificationNum">Số CMND/CCCD: <span style="color: red">*</span></label>
+                        <input type="number" class="form-control" th:field="*{identificationNum}" id="identificationNum" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email: <span style="color: red">*</span></label>
+                        <input type="email" th:field="*{email}" class="form-control" id="email" aria-describedby="emailHelp" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Địa chỉ hiện tại: <span style="color: red">*</span></label>
+                        <input type="text" class="form-control" th:field="*{address}" id="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="job">Công việc hiện tại: <span style="color: red">*</span></label>
+                        <input type="text" class="form-control" th:field="*{job}" id="job" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Đăng ký</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer id="footer" th:replace="~{/fragments/app-fragments :: footer}">
+</footer>
+
+</body>
+</html>
