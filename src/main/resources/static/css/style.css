@@ -3339,3 +3339,60 @@ Custom_style
 .add-account:hover {
     color: black;
 }
+
+.customer_list .card {
+    border: none;
+}
+
+.customer_list .card .col-auto {
+    margin-left: 10px;
+}
+
+.customer_list .btn_add {
+    padding-top: 20px;
+    padding-left: 70px;
+}
+
+#mainContent {
+    min-height: 500px;
+}
+
+.errorMessage {
+    font-size: 15px;
+    color: red;
+    font-weight: bold;
+    text-align: center;
+}
+
+.detail-link {
+    color: #0056b3;
+}
+
+.detail-link:hover {
+    color: #0056b3;
+}
+
+.delete-link {
+    color: red;
+}
+
+.delete-link:hover {
+    color: red;
+}
+
+.card.info-cus {
+    margin-bottom: 20px;
+}
+
+.card.info-cus p {
+    font-weight: bold;
+}
+
+.card-header.text-center {
+    background-color: #28a745 !important;
+    color: #fff !important;
+}
+
+.card-body.private-info {
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}

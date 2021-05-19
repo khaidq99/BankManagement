@@ -21,46 +21,28 @@
 
 <div id="mainContent">
     <div class="container">
-        <div class="jumbotron">
-            <h2>Chi tiết khách hàng</h2>
-            <form th:object="${account}">
-
-                <table border="0" cellpadding="10">
-                    <tr>
-                        <td>Account id:</td>
-                        <td>
-                            <input type="text" th:field="*{id}" readonly="readonly" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Họ và tên:</td>
-                        <td>
-                            <input type="text" th:field="*{fullname}" readonly="readonly"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Số điện thoại:</td>
-                        <td><input type="text" th:field="*{phone}" readonly="readonly"/></td>
-                    </tr>
-                    <tr>
-                        <td>Số CMND/CCCD:</td>
-                        <td><input type="text" th:field="*{identificationNum}" readonly="readonly"/></td>
-                    </tr>
-                    <tr>
-                        <td>Email:</td>
-                        <td><input type="text" th:field="*{email}" readonly="readonly"/></td>
-                    </tr>
-                    <tr>
-                        <td>Địa chỉ:</td>
-                        <td><input type="text" th:field="*{address}" readonly="readonly"/></td>
-                    </tr>
-                    <tr>
-                        <td>Công việc:</td>
-                        <td><input type="text" th:field="*{job}" readonly="readonly"/></td>
-                    </tr>
-                </table>
-            </form>
-            <p><a class="btn btn-success btn-lg" th:href="@{'/loan/' + ${account.id}}" role="button">Vay lãi</a></p>
+        <div class="row">
+            <div class="col-lg-6 offset-3">
+                <div class="card info-cus">
+                    <h3 class="card-header text-center">Thông tin khách hàng</h3>
+                    <div class="card-body private-info">
+                        <h4 class="card-title">Thông tin cá nhân</h4>
+                        <p class="card-text">Họ và tên: <span th:text="${acc.customer.name}"></span></p>
+                        <p class="card-text">Ngày sinh: <span th:text="${acc.customer.birthDay}"></span></p>
+                        <p class="card-text">Số điện thoại: <span th:text="${acc.customer.phone}"></span></p>
+                        <p class="card-text">Email: <span th:text="${acc.customer.email}"></span></p>
+                        <p class="card-text">Địa chỉ: <span th:text="${acc.customer.address}"></span></p>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">Thông tin tài khoản</h4>
+                        <p class="card-text">Usename: <span th:text="${acc.username}"></span></p>
+                        <p class="card-text">Số tài khoản: <span th:text="${acc.numberAccount}"></span></p>
+                        <p class="card-text">Số dư: <span th:text="${acc.balance}"></span></p>
+                        <a th:href="@{'/customer/edit/' + ${acc.id}}" class="btn btn-success">Sửa</a>
+                    </div>
+                </div>
+                <p><a class="btn btn-success btn-lg" th:href="@{'/loan/' + ${acc.id}}" role="button">Vay lãi</a></p>
+            </div>
         </div>
     </div>
 

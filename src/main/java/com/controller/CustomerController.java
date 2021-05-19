@@ -2,12 +2,10 @@ package com.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,13 +40,17 @@ public class CustomerController {
 	
 	@Autowired
 	private LoanConverter loanConverter;
+
+	@Autowired
+	private CustomerRepository cusRepo;
 	
 	@GetMapping
 	public String showCustomer(Model model) {
+		model.addAttribute("isSuccess", true);
 		return "customers/list";
 	}
 	
-	@GetMapping("/search")
+	@PostMapping("/search")
 	public String searchCustomer(@RequestParam("searchKey") String searchKey, Model model) {
 		AccountEntity ae = accRepo.findByNumberAccount(searchKey);
 		if(ae != null) {
@@ -59,9 +61,9 @@ public class CustomerController {
 		else {
 			model.addAttribute("isSuccess", false);
 		}
-		return "customer";
+		return "customers/list";
 	}
-	
+
 	@GetMapping("/detail/{id}")
 	public String showDetail(@PathVariable("id") Long id, Model model) {
 		Optional<AccountEntity> OptAe = accRepo.findById(id);
@@ -71,45 +73,83 @@ public class CustomerController {
 		}
 		List<LoanEntity> listE = loanRepo.findByAccountId(id);
 		if(listE.isEmpty()) {
-			model.addAttribute("listBs", null);
+			model.addAttribute("listLoan", null);
 		}
 		else {
-			List<LoanDto> listBs = new ArrayList<>();
-			for(LoanEntity bse : listE) {
-				listBs.add(loanConverter.toDto(bse));
+			List<LoanDto> listLoan = new ArrayList<>();
+			for(LoanEntity le : listE) {
+				listLoan.add(loanConverter.toDto(le));
 			}
-			model.addAttribute("listBs", listBs);
+			model.addAttribute("listLoan", listLoan);
 		}
-		return "customer_detail";
+		return "customers/detail";
 	}
 
-    @Autowired
-    private CustomerRepository cusRepo;
+    @GetMapping("/add")
+    public String showAddForm(Model model){
+		AccountDto account = new AccountDto();
 
-    @GetMapping("/register")
-    public String getAccount(Model model){
-        AccountDto account = new AccountDto();
-        int code = (int) Math.floor(((Math.random() * 899999) + 100000));
-        account.setNumberAccount(String.valueOf(code));
-        model.addAttribute("account", account);
-        return "register";
+		int max = 99999999;
+		int min = 10000000;
+		Random random = new Random();
+		int numAccount = random.nextInt(max - min) + min;
+
+		account.setNumberAccount(String.valueOf(numAccount));
+		model.addAttribute("account", account);
+		return "customers/add";
     }
 
-    @PostMapping("/register")
+    @PostMapping("/add")
     public String createAccount(Model model, @ModelAttribute("account") AccountEntity account, @RequestParam("balance") String balance,
-    		@RequestParam("birthday") String birthday, @RequestParam("confirm-password") String confirmPassword) throws ParseException {
+    		@RequestParam("birthday") String birthday) throws ParseException {
         AccountEntity accountPost = (AccountEntity) model.getAttribute("account");
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date birthdayFormat = sdf.parse(birthday);
-//        customer.setBirthday(birthdayFormat);
         accountPost.getCustomer().setBirthday(birthdayFormat);
+
         CustomerEntity customer = cusRepo.save(accountPost.getCustomer());
-//        System.out.println(accountPost.getNumberAccount());
         accountPost.setCustomer(customer);
         accountPost.setBalance(Long.parseLong(balance));
+
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encodedPassword = passwordEncoder.encode(accountPost.getPassword());
+		accountPost.setPassword(encodedPassword);
+
         accRepo.save(accountPost);
         model.addAttribute("acc", accountPost);
-        return "register_success";
+        return "customers/register_success";
     }
+
+	@GetMapping("/edit/{id}")
+	public String showEdit(@PathVariable("id") Long id, Model model) {
+		Optional<AccountEntity> OptAe = accRepo.findById(id);
+		if(OptAe.isPresent()) {
+			AccountDto acc = ac.toDto(OptAe.get());
+			model.addAttribute("acc", acc);
+		}
+		return "customers/edit";
+	}
+
+	@PostMapping("/edit/{id}")
+	public String editCustomer(Model model, @ModelAttribute("acc") AccountEntity account, @RequestParam("balance") String balance,
+								@RequestParam("birthday") String birthday) throws ParseException {
+		AccountEntity accountPost = (AccountEntity) model.getAttribute("acc");
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date birthdayFormat = sdf.parse(birthday);
+		accountPost.getCustomer().setBirthday(birthdayFormat);
+
+		CustomerEntity customer = cusRepo.save(accountPost.getCustomer());
+		accountPost.setCustomer(customer);
+		accountPost.setBalance(Long.parseLong(balance));
+
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encodedPassword = passwordEncoder.encode(accountPost.getPassword());
+		accountPost.setPassword(encodedPassword);
+
+		accRepo.save(accountPost);
+		model.addAttribute("acc", accountPost);
+		return "redirect:/showDetail";
+	}
 }

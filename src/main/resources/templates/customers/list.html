@@ -21,53 +21,58 @@
 
 <div id="mainContent">
     <div class="container customer_list">
-        <a class="btn btn-success btn-lg" href="/customer/add">Thêm mới khách hàng</a>
+        <div class="row">
+            <div class="col-lg-6 offset-lg-2">
+                <form method="POST" th:action="@{/customer/search}" class="card card-sm">
+                    <div class="card-body row no-gutters align-items-center">
+                        <!--end of col-->
+                        <div class="col">
+                            <input class="form-control form-control-lg form-control-borderless"
+                                   name="searchKey" type="search" placeholder="Nhập vào số tài khoản">
+                        </div>
+                        <!--end of col-->
+                        <div class="col-auto">
+                            <button class="btn btn-lg btn-success" type="submit">Tìm</button>
+                        </div>
+                        <!--end of col-->
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-3 btn_add">
+                <a class="btn btn-success btn-lg" href="/customer/add">Tạo mới</a>
+            </div>
+        </div>
+
         <h2 class="text-center main_title">Danh sách tài khoản khách hàng</h2>
         <div class="row">
             <div class="col-lg-8 offset-lg-2">
-                <table class="table table-striped table-bordered list-account">
+                <table class="table table-striped table-bordered list-account text-center">
                     <thead class="thead-dark">
                     <tr>
-                        <th>Account ID</th>
+                        <th>Số tài khoản</th>
                         <th>Họ và tên</th>
                         <th>Số điện thoại</th>
-                        <th>Email</th>
+                        <th>Số dư</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="account: ${listAccounts}">
-                        <td th:text="${account.id}"></td>
-                        <td th:text="${account.fullname}"></td>
-                        <td th:text="${account.phone}"></td>
-                        <td th:text="${account.email}"></td>
+                    <tr th:if="${acc != null}">
+                        <td th:text="${acc.numberAccount}"></td>
+                        <td th:text="${acc.customer.name}"></td>
+                        <td th:text="${acc.customer.phone}"></td>
+                        <td th:text="${acc.balance}"></td>
                         <td>
-                            <a th:href="@{'customer/detail/' + ${account.id}}">Detail</a>
+                            <a class="detail-link" th:href="@{'/customer/detail/' + ${acc.id}}">Detail</a>
                             &nbsp;&nbsp;&nbsp;
-                            <a th:href="@{'customer/delete/' + ${account.id}}">Delete</a>
+                            <a class="delete-link" th:href="@{'/customer/delete/' + ${acc.id}}">Delete</a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-            </div>
-            <div class="col-md-4 offset-lg-8">
-                <nav aria-label="Page navigation example" >
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <h4 th:if="${isSuccess == false}" class="errorMessage">
+                    Không tìm thấy kết quả, vui lòng thử lại.
+                </h4>
             </div>
         </div>
     </div>
@@ -76,14 +81,6 @@
 
 <footer id="footer" th:replace="~{/fragments/app-fragments :: footer}">
 </footer>
-
-<!--<script id="handler">-->
-<!--    jQuery(document).ready(function($) {-->
-<!--    $(".clickable-row").click(function() {-->
-<!--        window.location = $(this).data("href");-->
-<!--    });-->
-<!--});-->
-<!--</script>-->
 
 </body>
 </html>
