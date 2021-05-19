@@ -23,7 +23,10 @@ public class LoanEntity extends BaseEntity{
 
 	@Column
 	private int numPaidMonth;
-	
+
+	@Column
+	private Long monthlyTotalAmount;
+
 	@ManyToOne
 	@JoinColumn(name="interes_id")
 	private InteresEntity interes;
@@ -103,5 +106,13 @@ public class LoanEntity extends BaseEntity{
 
 	public void setNumPaidMonth(int numPaidMonth) {
 		this.numPaidMonth = numPaidMonth;
+	}
+
+	public Long getMonthlyTotalAmount() {
+		return monthlyTotalAmount;
+	}
+
+	public void setMonthlyTotalAmount(Long monthlyTotalAmount) {
+		this.monthlyTotalAmount = monthlyTotalAmount;
 	}
 }

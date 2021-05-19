@@ -22,6 +22,7 @@ public class LoanConverter {
 		b.setMonthlyOriginAmount(le.getMonthlyOriginAmount());
 		b.setNumPaidMonth(le.getNumPaidMonth());
 		b.setInteres(ic.toDto(le.getInteres()));
+		b.setMonthlyTotalAmount(le.getMonthlyTotalAmount());
 
 		return b;
 	}

@@ -8,6 +8,7 @@ public class LoanDto {
 	private Long monthlyOriginAmount;
 	private Long monthlyInterestAmount;
 	private int numPaidMonth;
+	private Long monthlyTotalAmount;
 	private InteresDto interes;
 	
 	public LoanDto() {
@@ -75,5 +76,13 @@ public class LoanDto {
 
 	public void setNumPaidMonth(int numPaidMonth) {
 		this.numPaidMonth = numPaidMonth;
+	}
+
+	public Long getMonthlyTotalAmount() {
+		return monthlyTotalAmount;
+	}
+
+	public void setMonthlyTotalAmount(Long monthlyTotalAmount) {
+		this.monthlyTotalAmount = monthlyTotalAmount;
 	}
 }

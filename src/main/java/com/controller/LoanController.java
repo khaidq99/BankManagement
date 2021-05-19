@@ -25,7 +25,7 @@ import java.util.Optional;
 @RequestMapping("/loan")
 public class LoanController {
 	@Autowired
-	private LoanRepository bsRepo;
+	private LoanRepository loanRepo;
 	
 	@Autowired
 	private LoanConverter lc;
@@ -52,33 +52,59 @@ public class LoanController {
 		for(InteresEntity.Type type : types) {
 			model.addAttribute(type.toString().toLowerCase(), filterByType(listDto, type));
 		}
-		model.addAttribute("loan", new LoanEntity());
+		model.addAttribute("loanE", new LoanEntity());
 		Optional<AccountEntity> OptAcc = accRepo.findById(id);
 		if(OptAcc.isPresent()) {
 			AccountDto acc = ac.toDto(OptAcc.get());
 			model.addAttribute("acc", acc);
 		}
+		model.addAttribute("idAccount", id);
 		return "loans/add";
 	}
-	
+
 	@PostMapping("/add/{idAccount}")
-	public String processAddLoan(@RequestParam("interes") String idInteres, @PathVariable("idAccount") String idAccount,
-									   @RequestParam("description") String description, @RequestParam("loan") String loan) {
+	public String processAddLoan(@RequestParam("interes") String idInteres,
+								 @PathVariable("idAccount") String idAccount,
+								 @RequestParam("description") String description,
+								 @RequestParam("loan") String loan) {
 		LoanEntity le = new LoanEntity();
+		Optional<InteresEntity> OptI = iRepo.findById(Long.parseLong(idInteres));
+		InteresEntity interestEntity = OptI.get();
+		le.setInteres(interestEntity);
 		Optional<AccountEntity> OptAcc = accRepo.findById(Long.parseLong(idAccount));
 		if(OptAcc.isPresent()) {
 			AccountEntity ae = OptAcc.get();
 			le.setAccount(ae);
 		}
 
-		le.setLoan(Long.parseLong(loan));
-		le.setDescription(description);
-		le.setStartDate(new Date());
-		Optional<InteresEntity> OptI = iRepo.findById(Long.parseLong(idInteres));
-		if(OptI.isPresent()) {
-			le.setInteres(OptI.get());
+		try {
+			// Số tiền vay ban đầu
+			Long loanAmount = Long.parseLong(loan);
+			// Số tháng vay
+			int month = interestEntity.getNumber();
+			// Lãi suất
+			float interest = interestEntity.getRatio();
+
+			// Gốc trả hàng tháng
+			Long monthlyOriginAmount = Long.parseLong(Math.round(loanAmount/12)+"");
+			// Lãi trả hàng tháng
+			Long monthlyInterestAmount = Long.parseLong(Math.round(loanAmount * interest / 100)+"");
+			// Tổng tiền phải trả hàng tháng
+			Long total = monthlyOriginAmount + monthlyInterestAmount;
+
+			le.setLoan(loanAmount);
+			le.setDescription(description);
+			le.setStartDate(new Date());
+			le.setMonthlyInterestAmount(monthlyInterestAmount);
+			le.setMonthlyOriginAmount(monthlyOriginAmount);
+			le.setMonthlyTotalAmount(total);
+			le.setNumPaidMonth(0);
+
+			loanRepo.save(le);
+		} catch (Exception e){
+			System.out.println(e);
 		}
-		bsRepo.save(le);
+
 		return "redirect:/customer/detail/" + idAccount;
 	}
 
@@ -96,7 +122,7 @@ public class LoanController {
 
 //    @GetMapping("/withdraw-info/{idBs}")
 //    public String showWithdrawInfomation(@PathVariable("idBs") Long idBs, Model model){
-//        Optional<LoanEntity> Opt = bsRepo.findById(idBs);
+//        Optional<LoanEntity> Opt = loanRepo.findById(idBs);
 //        if(Opt.isPresent()) {
 //        	LoanEntity bse = Opt.get();
 //        	Date date = new Date();
@@ -122,13 +148,13 @@ public class LoanController {
 //
 //    @GetMapping("/withdraw/{idBs}")
 //    public String updateWithdraw(@PathVariable("idBs") Long idBs){
-//        Optional<LoanEntity> Opt = bsRepo.findById(idBs);
+//        Optional<LoanEntity> Opt = loanRepo.findById(idBs);
 //        String accId = null;
 //        if(Opt.isPresent()) {
 //        	LoanEntity bse = Opt.get();
 //        	Date date = new Date();
 //            bse.setWithdrawDate(date);
-//            bsRepo.save(bse);
+//            loanRepo.save(bse);
 //            accId = bse.getAccount().getId().toString();
 //
 //        }

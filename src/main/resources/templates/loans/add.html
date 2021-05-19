@@ -37,14 +37,14 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title text-center font-bold">Gói vay</h4>
-                        <form method="post" th:object="${loan}">
+                        <form method="POST" th:object="${loanE}" th:action="@{/loan/add/} + ${idAccount}">
                             <div class="form-group">
                                 <label>Số tiền vay</label>
-                                <input class="form-control" type="number" th:field="${loan.loan}">
+                                <input class="form-control" type="number" th:field="${loanE.loan}">
                             </div>
                             <div class="form-group">
                                 <label>Mô tả</label>
-                                <input class="form-control" type="text" th:field="${loan.description}">
+                                <input class="form-control" type="text" th:field="${loanE.description}">
                             </div>
 
                             <div class="interes-group" id="month">
