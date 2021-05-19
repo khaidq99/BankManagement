@@ -132,24 +132,20 @@ public class CustomerController {
 	}
 
 	@PostMapping("/edit/{id}")
-	public String editCustomer(Model model, @ModelAttribute("acc") AccountEntity account, @RequestParam("balance") String balance,
-								@RequestParam("birthday") String birthday) throws ParseException {
+	public String editCustomer(Model model, @PathVariable("id") Long id,
+							   @ModelAttribute("acc") AccountEntity acc){
 		AccountEntity accountPost = (AccountEntity) model.getAttribute("acc");
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		Date birthdayFormat = sdf.parse(birthday);
-		accountPost.getCustomer().setBirthday(birthdayFormat);
+		Optional<AccountEntity> OptAe = accRepo.findById(id);
+		AccountEntity accountEntity = OptAe.get();
 
-		CustomerEntity customer = cusRepo.save(accountPost.getCustomer());
-		accountPost.setCustomer(customer);
-		accountPost.setBalance(Long.parseLong(balance));
+		CustomerEntity customerEntity = accountEntity.getCustomer();
+		customerEntity.setAddress(accountPost.getCustomer().getAddress());
+		customerEntity.setEmail(accountPost.getCustomer().getEmail());
+		customerEntity.setName(accountPost.getCustomer().getName());
+		customerEntity.setPhone(accountPost.getCustomer().getPhone());
 
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String encodedPassword = passwordEncoder.encode(accountPost.getPassword());
-		accountPost.setPassword(encodedPassword);
-
-		accRepo.save(accountPost);
-		model.addAttribute("acc", accountPost);
-		return "redirect:/showDetail";
+		accRepo.save(accountEntity);
+		return "redirect:/customer/detail/" + id;
 	}
 }
