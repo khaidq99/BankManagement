@@ -70,11 +70,11 @@ public class LoanController {
 		LoanEntity le = new LoanEntity();
 		Optional<InteresEntity> OptI = iRepo.findById(Long.parseLong(idInteres));
 		InteresEntity interestEntity = OptI.get();
-		le.setInteres(interestEntity);
 		Optional<AccountEntity> OptAcc = accRepo.findById(Long.parseLong(idAccount));
 		if(OptAcc.isPresent()) {
 			AccountEntity ae = OptAcc.get();
 			le.setAccount(ae);
+			le.setInteres(interestEntity);
 		}
 
 		try {
@@ -86,7 +86,7 @@ public class LoanController {
 			float interest = interestEntity.getRatio();
 
 			// Gốc trả hàng tháng
-			Long monthlyOriginAmount = Long.parseLong(Math.round(loanAmount/12)+"");
+			Long monthlyOriginAmount = Long.parseLong(Math.round(loanAmount/month)+"");
 			// Lãi trả hàng tháng
 			Long monthlyInterestAmount = Long.parseLong(Math.round(loanAmount * interest / 100)+"");
 			// Tổng tiền phải trả hàng tháng

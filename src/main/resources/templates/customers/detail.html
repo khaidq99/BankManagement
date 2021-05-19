@@ -41,7 +41,40 @@
                         <a th:href="@{'/customer/edit/' + ${acc.id}}" class="btn btn-success">Sửa</a>
                     </div>
                 </div>
-                <p><a class="btn btn-success btn-lg" th:href="@{'/loan/' + ${acc.id}}" role="button">Vay lãi</a></p>
+                <p class="text-center"><a class="btn btn-success btn-lg" th:href="@{'/loan/add/' + ${acc.id}}" role="button">Vay lãi</a></p>
+            </div>
+            <div class="col-lg-12">
+                <div class="list-loan">
+                    <div class="title-loan">Danh sách các gói vay</div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Mô tả</th>
+                            <th>Số tiền gốc vay</th>
+                            <th>Ngày bắt đầu vay</th>
+                            <th>Số tháng vay</th>
+                            <th>Lãi suất</th>
+                            <th>Gốc trả hàng tháng</th>
+                            <th>Lãi trả hàng tháng</th>
+                            <th>Tổng tiền trả hàng tháng</th>
+                            <th>Số tháng đã trả</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="loanE : ${listLoan}">
+                            <td th:text="${loanE.description}"></td>
+                            <td th:text="${loanE.loan}"></td>
+                            <td th:text="${loanE.startDate}"></td>
+                            <td th:text="${loanE.interes.number + ' tháng'}"></td>
+                            <td th:text="${loanE.interes.ratio + '%/tháng'}"></td>
+                            <td th:text="${loanE.monthlyOriginAmount}"></td>
+                            <td th:text="${loanE.monthlyInterestAmount}"></td>
+                            <td th:text="${loanE.monthlyTotalAmount}"></td>
+                            <td th:text="${loanE.numPaidMonth}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -3412,3 +3412,14 @@ Custom_style
 .mb-50 {
     margin-bottom: 50px !important;
 }
+
+.list-loan thead {
+    border-left: 1px solid #ead3d3;
+    border-right: 1px solid #ead3d3;
+}
+
+.title-loan {
+    text-align: center;
+    font-size: 30px;
+    margin-top: 50px;
+}
