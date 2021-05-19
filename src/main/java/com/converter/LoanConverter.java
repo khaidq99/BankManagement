@@ -1,28 +1,28 @@
 package com.converter;
 
-import java.text.SimpleDateFormat;
-
+import com.dto.LoanDto;
+import com.entity.LoanEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.dto.LoanDto;
-import com.entity.LoanEntity;
+import java.text.SimpleDateFormat;
 
 @Component
 public class LoanConverter {
 	@Autowired
 	private InteresConverter ic;
-	public LoanDto toDto(LoanEntity bse) {
+	public LoanDto toDto(LoanEntity le) {
 		LoanDto b = new LoanDto();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		b.setLoan(bse.getLoan());
-		b.setDescription(bse.getDescription());
-		b.setId(bse.getId());
-		b.setInteres(ic.toDto(bse.getInteres()));
-		b.setStartDate(formatter.format(bse.getStartDate()));
-		if(bse.getPaymentDate() != null) {
-			b.setPaymentDate(formatter.format(bse.getPaymentDate()));
-		}
+		b.setId(le.getId());
+		b.setStartDate(formatter.format(le.getStartDate()));
+		b.setLoan(le.getLoan());
+		b.setDescription(le.getDescription());
+		b.setMonthlyInterestAmount(le.getMonthlyInterestAmount());
+		b.setMonthlyOriginAmount(le.getMonthlyOriginAmount());
+		b.setNumPaidMonth(le.getNumPaidMonth());
+		b.setInteres(ic.toDto(le.getInteres()));
+
 		return b;
 	}
 }

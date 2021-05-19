@@ -3396,3 +3396,19 @@ Custom_style
 .card-body.private-info {
     border-bottom: 1px solid rgba(0,0,0,.125);
 }
+
+.font-bold {
+    font-weight: bold !important;
+}
+
+.font-17 {
+    font-size: 17px;
+}
+
+.interes-group {
+    margin-bottom: 20px;
+}
+
+.mb-50 {
+    margin-bottom: 50px !important;
+}

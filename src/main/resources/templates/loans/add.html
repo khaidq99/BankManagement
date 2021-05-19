@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #offcanvas},
+                                                ~{:: #header},
+                                                ~{:: #mainContent},
+                                                ~{:: #footer},
+                                                ~{:: #handler}
+                                               )}">
+<head>
+    <title>Khách hàng</title>
+</head>
+<body>
+
+<div id="offcanvas" th:replace="~{/fragments/app-fragments :: offcanvas}">
+</div>
+
+<header id="header" th:replace="~{/fragments/app-fragments :: header}">
+</header>
+
+<div id="mainContent">
+    <div class="container">
+        <h2 class="text-center main_title">Khách hàng vay vốn</h2>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title text-center">Thông tin tài khoản</h4>
+                        <p class="card-text font-bold">Họ và tên: <span th:text="${acc.customer.name}"></span></p>
+                        <p class="card-text font-bold">Số tài khoản: <span th:text="${acc.numberAccount}"></span></p>
+                        <p class="card-text font-bold">Số dư tài khoản: <span th:text="${acc.balance}"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9 mb-50">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title text-center font-bold">Gói vay</h4>
+                        <form method="post" th:object="${loan}">
+                            <div class="form-group">
+                                <label>Số tiền vay</label>
+                                <input class="form-control" type="number" th:field="${loan.loan}">
+                            </div>
+                            <div class="form-group">
+                                <label>Mô tả</label>
+                                <input class="form-control" type="text" th:field="${loan.description}">
+                            </div>
+
+                            <div class="interes-group" id="month">
+                                <p class="font-bold font-17">Vay theo tháng: </p>
+                                <div th:each="interes : ${month}" class="interes-item">
+                                    <input type="radio" th:value="${interes.id}" name="interes">
+                                    <span><span th:text="${interes.number}"></span> tháng, Lãi suất: <span th:text="${interes.ratio}"></span>%/tháng</span>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success">Vay lãi</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer id="footer" th:replace="~{/fragments/app-fragments :: footer}">
+</footer>
+
+</body>
+</html>

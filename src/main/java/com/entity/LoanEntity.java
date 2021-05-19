@@ -1,13 +1,7 @@
 package com.entity;
 
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
 
 @Entity
 @Table(name="loan")
@@ -20,9 +14,15 @@ public class LoanEntity extends BaseEntity{
 	
 	@Column
 	private String description;
-	
+
 	@Column
-	private Date paymentDate;
+	private Long monthlyOriginAmount;
+
+	@Column
+	private Long monthlyInterestAmount;
+
+	@Column
+	private int numPaidMonth;
 	
 	@ManyToOne
 	@JoinColumn(name="interes_id")
@@ -81,11 +81,27 @@ public class LoanEntity extends BaseEntity{
 		this.account = account;
 	}
 
-	public Date getPaymentDate() {
-		return paymentDate;
+	public Long getMonthlyOriginAmount() {
+		return monthlyOriginAmount;
 	}
 
-	public void setPaymentDate(Date paymentDate) {
-		this.paymentDate = paymentDate;
+	public void setMonthlyOriginAmount(Long monthlyOriginAmount) {
+		this.monthlyOriginAmount = monthlyOriginAmount;
+	}
+
+	public Long getMonthlyInterestAmount() {
+		return monthlyInterestAmount;
+	}
+
+	public void setMonthlyInterestAmount(Long monthlyInterestAmount) {
+		this.monthlyInterestAmount = monthlyInterestAmount;
+	}
+
+	public int getNumPaidMonth() {
+		return numPaidMonth;
+	}
+
+	public void setNumPaidMonth(int numPaidMonth) {
+		this.numPaidMonth = numPaidMonth;
 	}
 }

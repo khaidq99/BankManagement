@@ -3,9 +3,11 @@ package com.dto;
 public class LoanDto {
 	private Long id;
 	private String startDate;
-	private String description;
 	private Long loan;
-	private String paymentDate;
+	private String description;
+	private Long monthlyOriginAmount;
+	private Long monthlyInterestAmount;
+	private int numPaidMonth;
 	private InteresDto interes;
 	
 	public LoanDto() {
@@ -51,11 +53,27 @@ public class LoanDto {
 		this.interes = interes;
 	}
 
-	public String getPaymentDate() {
-		return paymentDate;
+	public Long getMonthlyOriginAmount() {
+		return monthlyOriginAmount;
 	}
 
-	public void setPaymentDate(String paymentDate) {
-		this.paymentDate = paymentDate;
+	public void setMonthlyOriginAmount(Long monthlyOriginAmount) {
+		this.monthlyOriginAmount = monthlyOriginAmount;
+	}
+
+	public Long getMonthlyInterestAmount() {
+		return monthlyInterestAmount;
+	}
+
+	public void setMonthlyInterestAmount(Long monthlyInterestAmount) {
+		this.monthlyInterestAmount = monthlyInterestAmount;
+	}
+
+	public int getNumPaidMonth() {
+		return numPaidMonth;
+	}
+
+	public void setNumPaidMonth(int numPaidMonth) {
+		this.numPaidMonth = numPaidMonth;
 	}
 }
