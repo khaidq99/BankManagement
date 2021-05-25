@@ -12,6 +12,7 @@ import com.entity.PaymentEntity;
 import com.repository.AccountRepository;
 import com.repository.InteresRepository;
 import com.repository.LoanRepository;
+import com.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,9 @@ import java.util.*;
 public class LoanController {
 	@Autowired
 	private LoanRepository loanRepo;
+
+	@Autowired
+	private PaymentRepository payRepo;
 	
 	@Autowired
 	private LoanConverter lc;
@@ -105,26 +109,23 @@ public class LoanController {
 			le.setMonthlyOriginAmount(monthlyOriginAmount);
 			le.setMonthlyTotalAmount(total);
 			le.setNumPaidMonth(0);
+			loanRepo.save(le);
 
-			ArrayList<PaymentEntity> listPay = new ArrayList<>();
 			Date currentDate = new Date();
 			Calendar c = Calendar.getInstance();
 			c.setTime(currentDate);
 
 			for(int i = 1; i <= month; i++){
 				PaymentEntity pe = new PaymentEntity();
+				pe.setLoan(le);
 				pe.setStatus(0); // 0 = chưa thanh toán, 1 = đã thanh toán
 				// set deadline date
 				c.add(Calendar.MONTH, i);
 				Date addedDate = c.getTime();
 				pe.setDeadlineDate(addedDate);
 				c.setTime(currentDate);
-
-				listPay.add(pe);
+				payRepo.save(pe);
 			}
-			le.setListPayment(listPay);
-
-			loanRepo.save(le);
 
 		} catch (Exception e){
 			System.out.println(e);
