@@ -2,6 +2,7 @@ package com.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="loan")
@@ -34,6 +35,9 @@ public class LoanEntity extends BaseEntity{
 	@ManyToOne
 	@JoinColumn(name="account_id")
 	private AccountEntity account;
+
+	@OneToMany(mappedBy = "loan")
+	private List<PaymentEntity> listPayment;
 	
 	@PrePersist
 	private void setStartDate() {
@@ -74,6 +78,14 @@ public class LoanEntity extends BaseEntity{
 
 	public void setInteres(InteresEntity interes) {
 		this.interes = interes;
+	}
+
+	public List<PaymentEntity> getListPayment() {
+		return listPayment;
+	}
+
+	public void setListPayment(List<PaymentEntity> listPayment) {
+		this.listPayment = listPayment;
 	}
 
 	public AccountEntity getAccount() {

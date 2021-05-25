@@ -8,6 +8,7 @@ import com.dto.InteresDto;
 import com.entity.AccountEntity;
 import com.entity.InteresEntity;
 import com.entity.LoanEntity;
+import com.entity.PaymentEntity;
 import com.repository.AccountRepository;
 import com.repository.InteresRepository;
 import com.repository.LoanRepository;
@@ -16,10 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import javax.transaction.Transactional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/loan")
@@ -62,20 +61,27 @@ public class LoanController {
 		return "loans/add";
 	}
 
+	@Transactional
 	@PostMapping("/add/{idAccount}")
 	public String processAddLoan(@RequestParam("interes") String idInteres,
 								 @PathVariable("idAccount") String idAccount,
 								 @RequestParam("description") String description,
 								 @RequestParam("loan") String loan) {
 		LoanEntity le = new LoanEntity();
+		InteresEntity interestEntity = new InteresEntity();
 		Optional<InteresEntity> OptI = iRepo.findById(Long.parseLong(idInteres));
-		InteresEntity interestEntity = OptI.get();
-		Optional<AccountEntity> OptAcc = accRepo.findById(Long.parseLong(idAccount));
-		if(OptAcc.isPresent()) {
-			AccountEntity ae = OptAcc.get();
-			le.setAccount(ae);
-			le.setInteres(interestEntity);
+		if (!OptI.isPresent()){
+			return "error";
 		}
+		interestEntity = OptI.get();
+		le.setInteres(interestEntity);
+
+		Optional<AccountEntity> OptAcc = accRepo.findById(Long.parseLong(idAccount));
+		if(!OptAcc.isPresent()) {
+			return "error";
+		}
+		AccountEntity ae = OptAcc.get();
+		le.setAccount(ae);
 
 		try {
 			// Số tiền vay ban đầu
@@ -100,7 +106,26 @@ public class LoanController {
 			le.setMonthlyTotalAmount(total);
 			le.setNumPaidMonth(0);
 
+			ArrayList<PaymentEntity> listPay = new ArrayList<>();
+			Date currentDate = new Date();
+			Calendar c = Calendar.getInstance();
+			c.setTime(currentDate);
+
+			for(int i = 1; i <= month; i++){
+				PaymentEntity pe = new PaymentEntity();
+				pe.setStatus(0); // 0 = chưa thanh toán, 1 = đã thanh toán
+				// set deadline date
+				c.add(Calendar.MONTH, i);
+				Date addedDate = c.getTime();
+				pe.setDeadlineDate(addedDate);
+				c.setTime(currentDate);
+
+				listPay.add(pe);
+			}
+			le.setListPayment(listPay);
+
 			loanRepo.save(le);
+
 		} catch (Exception e){
 			System.out.println(e);
 		}
