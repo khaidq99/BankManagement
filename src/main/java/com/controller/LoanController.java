@@ -3,8 +3,11 @@ package com.controller;
 import com.converter.AccountConverter;
 import com.converter.InteresConverter;
 import com.converter.LoanConverter;
+import com.converter.PaymentConverter;
 import com.dto.AccountDto;
 import com.dto.InteresDto;
+import com.dto.LoanDto;
+import com.dto.PaymentDto;
 import com.entity.AccountEntity;
 import com.entity.InteresEntity;
 import com.entity.LoanEntity;
@@ -42,8 +45,12 @@ public class LoanController {
 	@Autowired
 	private AccountConverter ac;
 	
-	@Autowired AccountRepository accRepo;
-	
+	@Autowired
+	private AccountRepository accRepo;
+
+	@Autowired
+	private PaymentConverter pc;
+
 	@GetMapping("/add/{idAccount}")
 	public String showAddForm(@PathVariable("idAccount") Long id, Model model) {
 		Iterable<InteresEntity> listE = iRepo.findAll();
@@ -144,46 +151,17 @@ public class LoanController {
 		return list;
 	}
 
+	@GetMapping("/detail/{id}")
+	public String showDetailForm(@PathVariable("id") Long id, Model model) {
+		List<PaymentEntity> listPay = payRepo.findByLoanId(id);
+		List<PaymentDto> payments = new ArrayList<>();
+		for(PaymentEntity p : listPay){
+			PaymentDto paymentDto = pc.toDto(p);
+			payments.add(paymentDto);
+		}
+		model.addAttribute("payments", payments);
 
+		return "loans/detail";
+	}
 
-//    @GetMapping("/withdraw-info/{idBs}")
-//    public String showWithdrawInfomation(@PathVariable("idBs") Long idBs, Model model){
-//        Optional<LoanEntity> Opt = loanRepo.findById(idBs);
-//        if(Opt.isPresent()) {
-//        	LoanEntity bse = Opt.get();
-//        	Date date = new Date();
-//            bse.setWithdrawDate(date);
-//            BookSavingDto bs = lc.toDto(bse);
-//            model.addAttribute("bs", bs);
-//            AccountDto acc = ac.toDto(bse.getAccount());
-//            model.addAttribute("acc", acc);
-//            double totalInteresD;
-//            if(bse.getInteres().getType().toString().equals("NOLIMIT")) {
-//            	Long diff = date.getTime() - bse.getStartDate().getTime();
-//            	Long dayDiff = TimeUnit.MILLISECONDS.toDays(diff);
-//            	totalInteresD = bse.getAmountSend() * bse.getInteres().getRatio() * dayDiff /360;
-//            }
-//            else {
-//            	totalInteresD = bse.getAmountSend() * bse.getInteres().getRatio() * bse.getInteres().getNumber() / 12;
-//            }
-//            Long totalInteres = Math.round(totalInteresD);
-//            model.addAttribute("totalInteres", totalInteres);
-//        }
-//        return "withdraw";
-//    }
-//
-//    @GetMapping("/withdraw/{idBs}")
-//    public String updateWithdraw(@PathVariable("idBs") Long idBs){
-//        Optional<LoanEntity> Opt = loanRepo.findById(idBs);
-//        String accId = null;
-//        if(Opt.isPresent()) {
-//        	LoanEntity bse = Opt.get();
-//        	Date date = new Date();
-//            bse.setWithdrawDate(date);
-//            loanRepo.save(bse);
-//            accId = bse.getAccount().getId().toString();
-//
-//        }
-//        return "redirect:/customer/detail/" + accId;
-//    }
 }

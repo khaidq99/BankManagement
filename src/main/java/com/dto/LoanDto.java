@@ -1,5 +1,7 @@
 package com.dto;
 
+import java.util.List;
+
 public class LoanDto {
 	private Long id;
 	private String startDate;
@@ -10,6 +12,7 @@ public class LoanDto {
 	private int numPaidMonth;
 	private Long monthlyTotalAmount;
 	private InteresDto interes;
+	private List<PaymentDto> listPayment;
 	
 	public LoanDto() {
 		super();
@@ -84,5 +87,13 @@ public class LoanDto {
 
 	public void setMonthlyTotalAmount(Long monthlyTotalAmount) {
 		this.monthlyTotalAmount = monthlyTotalAmount;
+	}
+
+	public List<PaymentDto> getListPayment() {
+		return listPayment;
+	}
+
+	public void setListPayment(List<PaymentDto> listPayment) {
+		this.listPayment = listPayment;
 	}
 }

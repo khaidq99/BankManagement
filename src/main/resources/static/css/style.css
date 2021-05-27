@@ -3423,3 +3423,7 @@ Custom_style
     font-size: 30px;
     margin-top: 50px;
 }
+
+.list-loan table {
+    margin-bottom: 150px;
+}

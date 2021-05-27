@@ -3,9 +3,11 @@ package com.converter;
 import com.dto.PaymentDto;
 import com.entity.PaymentEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 
+@Component
 public class PaymentConverter {
     @Autowired
     private LoanConverter lc;
@@ -13,11 +15,12 @@ public class PaymentConverter {
     public PaymentDto toDto(PaymentEntity pe){
         PaymentDto p = new PaymentDto();
         p.setId(pe.getId());
-        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss dd-MM-yyyy");
-        p.setDatePayment(formatter.format(pe.getDatePayment()));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        if(pe.getDatePayment() != null){
+            p.setDatePayment(formatter.format(pe.getDatePayment()));
+        }
         p.setDeadlineDate(formatter.format(pe.getDeadlineDate()));
         p.setStatus(pe.getStatus());
-        p.setLoanDto(lc.toDto(pe.getLoan()));
 
         return p;
     }

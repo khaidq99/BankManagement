@@ -5,7 +5,6 @@ public class PaymentDto {
     private int status;
     private String datePayment;
     private String deadlineDate;
-    private LoanDto loanDto;
 
     public PaymentDto() {
     }
@@ -40,13 +39,5 @@ public class PaymentDto {
 
     public void setDeadlineDate(String deadlineDate) {
         this.deadlineDate = deadlineDate;
-    }
-
-    public LoanDto getLoanDto() {
-        return loanDto;
-    }
-
-    public void setLoanDto(LoanDto loanDto) {
-        this.loanDto = loanDto;
     }
 }

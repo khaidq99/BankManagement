@@ -49,6 +49,7 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
+                            <th>STT</th>
                             <th>Mô tả</th>
                             <th>Số tiền gốc vay</th>
                             <th>Ngày bắt đầu vay</th>
@@ -58,10 +59,12 @@
                             <th>Lãi trả hàng tháng</th>
                             <th>Tổng tiền trả hàng tháng</th>
                             <th>Số tháng đã trả</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="loanE : ${listLoan}">
+                        <tr th:each="loanE, state : ${listLoan}">
+                            <td th:text="${state.count}"></td>
                             <td th:text="${loanE.description}"></td>
                             <td th:text="${loanE.loan}"></td>
                             <td th:text="${loanE.startDate}"></td>
@@ -71,6 +74,9 @@
                             <td th:text="${loanE.monthlyInterestAmount}"></td>
                             <td th:text="${loanE.monthlyTotalAmount}"></td>
                             <td th:text="${loanE.numPaidMonth}"></td>
+                            <td>
+                                <a class="detail-link" th:href="@{'/loan/detail/' + ${loanE.id}}">Detail</a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

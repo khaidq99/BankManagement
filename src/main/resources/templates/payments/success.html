@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #offcanvas},
+                                                ~{:: #header},
+                                                ~{:: #mainContent},
+                                                ~{:: #footer},
+                                                ~{:: #handler}
+                                               )}">
+<head>
+    <title>Khách hàng</title>
+</head>
+<body>
+
+<div id="offcanvas" th:replace="~{/fragments/app-fragments :: offcanvas}">
+</div>
+
+<header id="header" th:replace="~{/fragments/app-fragments :: header}">
+</header>
+
+<div id="mainContent">
+    <div class="container">
+        <h2 class="text-center main_title">Thanh toán thành công</h2>
+    </div>
+
+</div>
+
+<footer id="footer" th:replace="~{/fragments/app-fragments :: footer}">
+</footer>
+
+</body>
+</html>
