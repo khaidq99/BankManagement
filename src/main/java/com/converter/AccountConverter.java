@@ -8,9 +8,7 @@ import com.entity.AccountEntity;
 
 @Component
 public class AccountConverter {
-	@Autowired
 	private CustomerConverter cc;
-
 	public AccountDto toDto(AccountEntity ae) {
 		AccountDto a = new AccountDto();
 		a.setBalance(ae.getBalance());
@@ -20,5 +18,8 @@ public class AccountConverter {
 		a.setPassword(ae.getPassword());
 		a.setUsername(ae.getUsername());
 		return a;
+	}
+	public AccountConverter(){
+		cc = new CustomerConverter();
 	}
 }

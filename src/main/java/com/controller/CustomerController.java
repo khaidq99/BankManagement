@@ -52,16 +52,26 @@ public class CustomerController {
 	
 	@PostMapping("/search")
 	public String searchCustomer(@RequestParam("searchKey") String searchKey, Model model) {
-		AccountEntity ae = accRepo.findByNumberAccount(searchKey);
-		if(ae != null) {
-			AccountDto acc = ac.toDto(ae);
-			model.addAttribute("acc", acc);
-			model.addAttribute("isSuccess", true);
-		}
-		else {
-			model.addAttribute("isSuccess", false);
-		}
+		Map<String, Object> rs = handleSearchCustomer(searchKey, accRepo, ac);
+		model.addAttribute("acc", rs.get("acc"));
+		model.addAttribute("isSuccess", rs.get("acc"));
+
 		return "customers/list";
+	}
+
+	public Map<String, Object> handleSearchCustomer(String key, AccountRepository repo, AccountConverter accCon){
+		AccountEntity ae = repo.findByNumberAccount(key);
+		Map<String, Object> result = new HashMap<>();
+
+		if (ae != null){
+			AccountDto acc = accCon.toDto(ae);
+			result.put("acc", acc);
+			result.put("isSuccess", true);
+		} else {
+			result.put("acc", null);
+			result.put("isSuccess", false);
+		}
+		return result;
 	}
 
 	@GetMapping("/detail/{id}")

@@ -9,6 +9,9 @@ import com.entity.CustomerEntity;
 
 @Component
 public class CustomerConverter {
+	public CustomerConverter(){
+	}
+
 	public CustomerDto toDto(CustomerEntity ce) {
 		CustomerDto c = new CustomerDto();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -20,4 +23,5 @@ public class CustomerConverter {
 		c.setPhone(ce.getPhone());
 		return c;
 	}
+
 }
