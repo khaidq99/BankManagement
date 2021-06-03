@@ -151,12 +151,6 @@ public class CustomerControllerTest {
     public void testAddcustomer8() throws ParseException {
 
         AccountEntity account = new AccountEntity();
-        // set numAccount exist in the database
-        String numAccount = "24938680";
-        account.setNumberAccount(numAccount);
-        // set username exist in the database
-        account.setUsername("khai");
-        account.setPassword("123456");
         CustomerEntity cus = new CustomerEntity();
         account.setCustomer(cus);
 
@@ -201,14 +195,27 @@ public class CustomerControllerTest {
 
         Map<String, Object> rs = controller.handlerEditCustomer(id, accountPost, accRepo);
 
-        // check database
-        Optional<AccountEntity> OptAe = accRepo.findById(id);
-        AccountEntity editedAccount = OptAe.get();
-
-        assertEquals(editedAccount.getBalance(), accountPost.getBalance());
-        assertEquals(editedAccount.getCustomer().getName(), accountPost.getCustomer().getName());
-        assertEquals(editedAccount.getBalance(), accountPost.getBalance());
         assertEquals(false, rs.get("isSuccess"));
+    }
+
+    // Exits id
+    @Test
+    public void testGetEditForm11(){
+        Long id = 3L;
+        AccountConverter ac = new AccountConverter();
+        Map<String, Object> rs = controller.getEditForm(id, accRepo, ac);
+
+        assertNotNull(rs.get("acc"));
+    }
+
+    // Not exits id
+    @Test
+    public void testGetEditForm12(){
+        Long id = 50L;
+        AccountConverter ac = new AccountConverter();
+        Map<String, Object> rs = controller.getEditForm(id, accRepo, ac);
+
+        assertNull(rs.get("acc"));
     }
 
 }

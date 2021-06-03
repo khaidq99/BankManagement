@@ -164,12 +164,24 @@ public class CustomerController {
 
 	@GetMapping("/edit/{id}")
 	public String showEdit(@PathVariable("id") Long id, Model model) {
+		Map<String, Object> rs = getEditForm(id, accRepo, ac);
+		model.addAttribute("acc", rs.get("acc"));
+
+		return "customers/edit";
+	}
+
+	public Map<String, Object> getEditForm(Long id, AccountRepository accRepo, AccountConverter ac){
+		Map<String, Object> rs = new HashMap<>();
+
 		Optional<AccountEntity> OptAe = accRepo.findById(id);
 		if(OptAe.isPresent()) {
 			AccountDto acc = ac.toDto(OptAe.get());
-			model.addAttribute("acc", acc);
+			rs.put("acc", acc);
+		} else {
+			rs.put("acc", null);
 		}
-		return "customers/edit";
+
+		return rs;
 	}
 
 	@PostMapping("/edit/{id}")
@@ -186,15 +198,20 @@ public class CustomerController {
 		Map<String, Object> result = new HashMap<>();
 
 		Optional<AccountEntity> OptAe = accRepo.findById(id);
-		AccountEntity accountEntity = OptAe.get();
+		if(OptAe.isPresent()){
+			AccountEntity accountEntity = OptAe.get();
 
-		CustomerEntity customerEntity = accountEntity.getCustomer();
-		customerEntity.setAddress(accountPost.getCustomer().getAddress());
-		customerEntity.setEmail(accountPost.getCustomer().getEmail());
-		customerEntity.setName(accountPost.getCustomer().getName());
-		customerEntity.setPhone(accountPost.getCustomer().getPhone());
+			CustomerEntity customerEntity = accountEntity.getCustomer();
+			customerEntity.setAddress(accountPost.getCustomer().getAddress());
+			customerEntity.setEmail(accountPost.getCustomer().getEmail());
+			customerEntity.setName(accountPost.getCustomer().getName());
+			customerEntity.setPhone(accountPost.getCustomer().getPhone());
 
-		result.put("isSuccess", true);
+			result.put("isSuccess", true);
+		} else {
+			result.put("isSuccess", false);
+		}
+
 
 		return result;
 	}

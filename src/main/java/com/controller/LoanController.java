@@ -63,13 +63,25 @@ public class LoanController {
 			model.addAttribute(type.toString().toLowerCase(), filterByType(listDto, type));
 		}
 		model.addAttribute("loanE", new LoanEntity());
-		Optional<AccountEntity> OptAcc = accRepo.findById(id);
-		if(OptAcc.isPresent()) {
-			AccountDto acc = ac.toDto(OptAcc.get());
-			model.addAttribute("acc", acc);
-		}
+
+		Map<String, Object> result = handlerShowAddForm(id, ac, accRepo);
+		model.addAttribute("acc", result.get("acc"));
 		model.addAttribute("idAccount", id);
 		return "loans/add";
+	}
+
+	public Map<String, Object> handlerShowAddForm(Long id, AccountConverter ac, AccountRepository accRepo){
+		Map<String, Object> result = new HashMap<>();
+
+		Optional<AccountEntity> OptAcc = accRepo.findById(id);
+		if (OptAcc.isPresent()){
+			AccountDto acc = ac.toDto(OptAcc.get());
+			result.put("acc", acc);
+		} else {
+			result.put("acc", null);
+		}
+
+		return result;
 	}
 
 	@Transactional
@@ -91,6 +103,15 @@ public class LoanController {
 		if(!OptAcc.isPresent()) {
 			return "error";
 		}
+
+		if (description.equals("")){
+			return "error";
+		}
+
+		if (loan.equals("")){
+			return "error";
+		}
+
 		AccountEntity ae = OptAcc.get();
 		le.setAccount(ae);
 
@@ -153,15 +174,26 @@ public class LoanController {
 
 	@GetMapping("/detail/{id}")
 	public String showDetailForm(@PathVariable("id") Long id, Model model) {
+		Map<String, Object> rs = handlerShowDetailForm(id, payRepo, pc);
+		model.addAttribute("payments", rs.get("payments"));
+
+		return "loans/detail";
+	}
+
+	public Map<String, Object> handlerShowDetailForm(Long id, PaymentRepository payRepo,
+													 PaymentConverter pc){
+		Map<String, Object> result = new HashMap<>();
+
 		List<PaymentEntity> listPay = payRepo.findByLoanId(id);
 		List<PaymentDto> payments = new ArrayList<>();
 		for(PaymentEntity p : listPay){
 			PaymentDto paymentDto = pc.toDto(p);
 			payments.add(paymentDto);
 		}
-		model.addAttribute("payments", payments);
 
-		return "loans/detail";
+		result.put("payments", payments);
+
+		return result;
 	}
 
 }

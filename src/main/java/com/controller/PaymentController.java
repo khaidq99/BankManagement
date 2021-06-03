@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -28,19 +30,37 @@ public class PaymentController {
 
     @GetMapping("/{id}")
     public String payment(@PathVariable("id") Long id, Model model) {
-        Optional<PaymentEntity> OptPe = payRepo.findById(id);
-        if(!OptPe.isPresent()) {
+        Map<String, Boolean> rs = handlerPayment(id, payRepo, loanRepo);
+
+        if(!rs.get("isSuccess")) {
             return "error";
         }
-        PaymentEntity pe = OptPe.get();
-        pe.setDatePayment(new Date());
-        pe.setStatus(1);
-        payRepo.save(pe);
-
-        LoanEntity loan = pe.getLoan();
-        loan.setNumPaidMonth(loan.getNumPaidMonth() + 1);
-        loanRepo.save(loan);
 
         return "payments/success";
+    }
+
+    public Map<String, Boolean> handlerPayment(Long id, PaymentRepository payRepo, LoanRepository loanRepo){
+        Map<String, Boolean> rs = new HashMap<>();
+
+        Optional<PaymentEntity> OptPe = payRepo.findById(id);
+        if(!OptPe.isPresent()) {
+            rs.put("isSuccess", false);
+        } else {
+            PaymentEntity pe = OptPe.get();
+            pe.setDatePayment(new Date());
+            if(pe.getStatus() == 1){
+                rs.put("isSuccess", false);
+            } else {
+                pe.setStatus(1);
+                payRepo.save(pe);
+
+                LoanEntity loan = pe.getLoan();
+                loan.setNumPaidMonth(loan.getNumPaidMonth() + 1);
+                loanRepo.save(loan);
+                rs.put("isSuccess", true);
+            }
+        }
+
+        return rs;
     }
 }
