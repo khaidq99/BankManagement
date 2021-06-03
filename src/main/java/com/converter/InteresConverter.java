@@ -7,6 +7,9 @@ import com.entity.InteresEntity;
 
 @Component
 public class InteresConverter {
+	public InteresConverter() {
+	}
+
 	public InteresDto toDto(InteresEntity ie) {
 		InteresDto i = new InteresDto();
 		i.setId(ie.getId());

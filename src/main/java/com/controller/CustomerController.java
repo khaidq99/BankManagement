@@ -76,23 +76,37 @@ public class CustomerController {
 
 	@GetMapping("/detail/{id}")
 	public String showDetail(@PathVariable("id") Long id, Model model) {
+		Map<String, Object> rs = getDetailCustomer(id, accRepo, ac, loanConverter, loanRepo);
+
+		model.addAttribute("acc", rs.get("acc"));
+		model.addAttribute("listLoan", rs.get("listLoan"));
+
+		return "customers/detail";
+	}
+
+	public Map<String, Object> getDetailCustomer(@PathVariable("id") Long id, AccountRepository accRepo,
+												 AccountConverter ac, LoanConverter loanConverter,
+												 LoanRepository loanRepo){
+		Map<String, Object> result = new HashMap<>();
+
 		Optional<AccountEntity> OptAe = accRepo.findById(id);
 		if(OptAe.isPresent()) {
 			AccountDto acc = ac.toDto(OptAe.get());
-			model.addAttribute("acc", acc);
+			result.put("acc", acc);
 		}
+
 		List<LoanEntity> listE = loanRepo.findByAccountId(id);
 		if(listE.isEmpty()) {
-			model.addAttribute("listLoan", null);
+			result.put("listLoan", null);
 		}
 		else {
 			List<LoanDto> listLoan = new ArrayList<>();
 			for(LoanEntity le : listE) {
 				listLoan.add(loanConverter.toDto(le));
 			}
-			model.addAttribute("listLoan", listLoan);
+			result.put("listLoan", listLoan);
 		}
-		return "customers/detail";
+		return result;
 	}
 
     @GetMapping("/add")
@@ -110,26 +124,43 @@ public class CustomerController {
     }
 
     @PostMapping("/add")
-    public String createAccount(Model model, @ModelAttribute("account") AccountEntity account, @RequestParam("balance") String balance,
-    		@RequestParam("birthday") String birthday) throws ParseException {
+	public String createAccount(Model model, @ModelAttribute("account") AccountEntity account,
+								@RequestParam("balance") String balance,
+								@RequestParam("birthday") String birthday) throws ParseException {
         AccountEntity accountPost = (AccountEntity) model.getAttribute("account");
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date birthdayFormat = sdf.parse(birthday);
-        accountPost.getCustomer().setBirthday(birthdayFormat);
+		Map<String, Object> resulst = handlerAddCustomer(accountPost, balance, birthday, cusRepo, accRepo);
 
-        CustomerEntity customer = cusRepo.save(accountPost.getCustomer());
-        accountPost.setCustomer(customer);
-        accountPost.setBalance(Long.parseLong(balance));
+        model.addAttribute("acc", resulst.get("acc"));
+        return "customers/register_success";
+    }
+
+    public Map<String, Object> handlerAddCustomer(AccountEntity accountPost, String balance, String birthday,
+											CustomerRepository cusRepo, AccountRepository accRepo)
+			throws ParseException {
+		Map<String, Object> result = new HashMap<>();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date birthdayFormat = sdf.parse(birthday);
+		accountPost.getCustomer().setBirthday(birthdayFormat);
+
+		CustomerEntity customer = cusRepo.save(accountPost.getCustomer());
+		accountPost.setCustomer(customer);
+		accountPost.setBalance(Long.parseLong(balance));
 
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encodedPassword = passwordEncoder.encode(accountPost.getPassword());
 		accountPost.setPassword(encodedPassword);
 
-        accRepo.save(accountPost);
-        model.addAttribute("acc", accountPost);
-        return "customers/register_success";
-    }
+		if(accRepo.save(accountPost) != null){
+			result.put("acc", accountPost);
+			result.put("isSuccess", true);
+		} else {
+			result.put("isSuccess", false);
+		}
+
+		return result;
+	}
 
 	@GetMapping("/edit/{id}")
 	public String showEdit(@PathVariable("id") Long id, Model model) {
@@ -145,6 +176,14 @@ public class CustomerController {
 	public String editCustomer(Model model, @PathVariable("id") Long id,
 							   @ModelAttribute("acc") AccountEntity acc){
 		AccountEntity accountPost = (AccountEntity) model.getAttribute("acc");
+		Map<String, Object> rs = handlerEditCustomer(id, accountPost, accRepo);
+
+		return "redirect:/customer/detail/" + id;
+	}
+
+	public Map<String, Object> handlerEditCustomer(Long id, AccountEntity accountPost,
+												   AccountRepository accRepo){
+		Map<String, Object> result = new HashMap<>();
 
 		Optional<AccountEntity> OptAe = accRepo.findById(id);
 		AccountEntity accountEntity = OptAe.get();
@@ -155,7 +194,10 @@ public class CustomerController {
 		customerEntity.setName(accountPost.getCustomer().getName());
 		customerEntity.setPhone(accountPost.getCustomer().getPhone());
 
-		accRepo.save(accountEntity);
-		return "redirect:/customer/detail/" + id;
+		result.put("isSuccess", true);
+
+		return result;
 	}
+
+
 }

@@ -13,11 +13,13 @@ import java.util.List;
 
 @Component
 public class LoanConverter {
-	@Autowired
 	private InteresConverter ic;
-
-	@Autowired
 	private PaymentConverter pc;
+
+	public LoanConverter() {
+		ic = new InteresConverter();
+		pc = new PaymentConverter();
+	}
 
 	public LoanDto toDto(LoanEntity le) {
 		LoanDto l = new LoanDto();

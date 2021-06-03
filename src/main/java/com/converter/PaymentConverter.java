@@ -9,8 +9,6 @@ import java.text.SimpleDateFormat;
 
 @Component
 public class PaymentConverter {
-    @Autowired
-    private LoanConverter lc;
 
     public PaymentDto toDto(PaymentEntity pe){
         PaymentDto p = new PaymentDto();
